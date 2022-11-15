@@ -2,27 +2,29 @@ package arabian;
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
-        Converter converter = new Converter();
-        Scanner s = new Scanner(System.in);
         System.out.println();
         System.out.print("Введите два операнда и один оператор (+, -, /, *) через пробел: ");
-        String input = s.nextLine();
-        String eq = input.trim();
+        Scanner s = new Scanner(System.in);
+        String in = s.nextLine();
+        String eq = in.trim();
+        System.out.println(calc(eq));
+    }
+    public static String calc(String input) {
+        Converter converter = new Converter();
         String[] symbols = {"+", "-", "/", "*"};
         int symbolIndex = -1;
         for (int i = 0; i < symbols.length; i++){
-            if(eq.contains(symbols[i])){
+            if(input.contains(symbols[i])){
                 symbolIndex = i;
                 break;
             }
         }
         if(symbolIndex==-1){
-            System.out.println("Ошибка. Используйте операторы (+, -, /, *)");
-            return;
+            return "Ошибка. Используйте операторы (+, -, /, *)";
         }
-        String[] data = eq.split(" ");
+        String[] data = input.split(" ");
         if (data.length != 3){
-            System.out.println("Ошибка. Введите два операнда и один оператор (+, -, /, *).");
+            return "Ошибка. Введите два операнда и один оператор (+, -, /, *).";
         }else {
             if (converter.isRoman(data[0]) == converter.isRoman(data[2])) {
                 int a, b;
@@ -35,7 +37,7 @@ public class Main {
                     b = Integer.parseInt(data[2]);
                 }
                 if (a < 1 || a > 10 || b < 1 || b > 10) {
-                    System.out.println("Ошибка. Пожалуйста вводите числа от 1 до 10.");
+                    return "Ошибка. Пожалуйста вводите числа от 1 до 10.";
                 } else {
                     int result;
                     switch (data[1]) {
@@ -47,15 +49,15 @@ public class Main {
                     }
                     if (isRoman) {
                         if (result <= 0) {
-                            System.out.println("Ошибка. В римской системе нет 0 и отрицательных чисел.");
+                            return "Ошибка. В римской системе нет 0 и отрицательных чисел.";
                         } else
-                            System.out.println("Ответ: "+converter.intToRoman(result));
+                            return "Ответ: "+converter.intToRoman(result);
                     } else {
-                        System.out.println("Ответ: "+result);
+                        return "Ответ: "+result;
                     }
                 }
             } else {
-                System.out.println("Ошибка. Используйте числа в одной исчислительной системе.");
+                return "Ошибка. Используйте числа в одной исчислительной системе.";
             }
         }
     }
