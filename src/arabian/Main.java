@@ -1,7 +1,8 @@
 package arabian;
+import java.io.IOException;
 import java.util.Scanner;
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, IllegalStateException {
         System.out.println();
         System.out.print("Введите два операнда и один оператор (+, -, /, *) через пробел: ");
         Scanner s = new Scanner(System.in);
@@ -9,7 +10,7 @@ public class Main {
         String eq = in.trim();
         System.out.println(calc(eq));
     }
-    public static String calc(String input) {
+    public static String calc(String input) throws IOException, IllegalStateException {
         Converter converter = new Converter();
         String[] symbols = {"+", "-", "/", "*"};
         int symbolIndex = -1;
@@ -19,7 +20,13 @@ public class Main {
                 break;
             }
         }
-        String[] data = input.split(" "); {
+        if(symbolIndex==-1){
+            throw new IllegalStateException ("Пожалуйста введите корректный оператор (+, -, /, *)");
+        }
+        String[] data = input.split(" ");
+        if (data.length != 3){
+            throw new IOException("Пожалуйста введите два операнда и один оператор (+, -, /, *)");
+        }else {
             if (converter.isRoman(data[0]) == converter.isRoman(data[2])) {
                 int a, b;
                 boolean isRoman = converter.isRoman(data[0]);
@@ -31,7 +38,7 @@ public class Main {
                     b = Integer.parseInt(data[2]);
                 }
                 if (a < 1 || a > 10 || b < 1 || b > 10) {
-                    return "Ошибка. Пожалуйста вводите числа от 1 до 10.";
+                    throw new IOException("Пожалуйста вводите числа от 1 до 10");
                 } else {
                     int result;
                     switch (data[1]) {
@@ -39,11 +46,11 @@ public class Main {
                         case "-" -> result = a - b;
                         case "*" -> result = a * b;
                         case "/" -> result = a / b;
-                        default -> throw new IllegalStateException("Unexpected value: " + symbols[symbolIndex]);
+                        default -> throw new IllegalStateException("Пожалуйста введите корректный оператор (+, -, /, *)");
                     }
                     if (isRoman) {
                         if (result <= 0) {
-                            return "Ошибка. В римской системе нет 0 и отрицательных чисел.";
+                            throw new IOException("В римской системе нет 0 и отрицательных чисел");
                         } else
                             return "Ответ: "+converter.intToRoman(result);
                     } else {
@@ -51,7 +58,7 @@ public class Main {
                     }
                 }
             } else {
-                return "Ошибка. Используйте числа в одной исчислительной системе.";
+                throw new IOException("Пожалуйста, используйте числа в одной исчислительной системе");
             }
         }
     }
