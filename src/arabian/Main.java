@@ -19,13 +19,7 @@ public class Main {
                 break;
             }
         }
-        if(symbolIndex==-1){
-            return "Ошибка. Используйте операторы (+, -, /, *)";
-        }
-        String[] data = input.split(" ");
-        if (data.length != 3){
-            return "Ошибка. Введите два операнда и один оператор (+, -, /, *).";
-        }else {
+        String[] data = input.split(" "); {
             if (converter.isRoman(data[0]) == converter.isRoman(data[2])) {
                 int a, b;
                 boolean isRoman = converter.isRoman(data[0]);
